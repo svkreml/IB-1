@@ -1,5 +1,7 @@
 package db;
 
+import org.apache.commons.codec.binary.Hex;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ public class Auth {
     public Auth(FileManager filemanager) {
         this.filemanager = filemanager;
         db = (Map<String, Hasher>) filemanager.load();
+        if (db == null) db = new HashMap();
     }
 
     public boolean findLogin(String login) {
@@ -27,15 +30,16 @@ public class Auth {
         return db.keySet();
     }
 
-    public String listHashes() {
+    public String list() {
         StringBuilder buff = new StringBuilder();
         buff.append("login               date            hash\n");
+        buff.append("---------------------------------------------------\n");
         for (String key : db.keySet()) {
-            char[] spaces = new char[(20 - key.length())];
-            for (int i = 0;i<(20 - key.length()); i++) {
+            char[] spaces = new char[(22 - key.length())];
+            for (int i = 0; i < (20 - key.length()); i++) {
                 spaces[i] = ' ';
             }
-            buff.append(key + String.valueOf(spaces) + db.get(key).getDate() + "   " + db.get(key).getHash() + '\n');
+            buff.append(key + String.valueOf(spaces) + db.get(key).getDate() + "   " + Hex.encodeHexString(db.get(key).getHash()) + '\n');
         }
         return buff.toString();
     }
@@ -50,21 +54,22 @@ public class Auth {
     }
 
     public String registarion(String login, String password) {
-        if(db==null) db = new HashMap();
-        if (db.containsKey(login)) return "Already exist";
+        if (login.length() > 20) return "login too long";
+        if (password.length() > 20) return "password too long";
+        if (db.containsKey(login)) return login + " already exist";
         Date date = new Date();
 
         Hasher hasher = new Hasher(password, date.getTime());
         db.put(login, hasher);
         filemanager.save(db);
-        return "Created";
+        return "Created login " + login;
     }
 
     public String autorisation(String login, String password) {
-        if (!db.containsKey(login)) return "login not found";
+        if (!db.containsKey(login)) return "login " + login + " not found";
         Hasher hasher = db.get(login);
         if (hasher.getHash().equals(toSHA1(password + hasher.getDate())))
-            return "access";
+            return "Access";
         else return "wrong password";
     }
 

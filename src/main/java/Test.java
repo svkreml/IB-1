@@ -11,9 +11,9 @@ public class Test {
         Auth auth = new Auth(filemanager);
 
         System.out.println(auth.registarion("login", "password"));
-        System.out.println(auth.findLogin("login"));
-        System.out.println(auth.deleteLogin("login54"));
-        System.out.println(auth.autorisation("login", "password"));
-        System.out.println(auth.listHashes());
+        //System.out.println(auth.findLogin("login"));
+        //System.out.println(auth.deleteLogin("login"));
+        //System.out.println(auth.autorisation("login", "password"));
+        System.out.println(auth.list());
     }
 }
