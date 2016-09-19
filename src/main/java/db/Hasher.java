@@ -34,4 +34,5 @@ class Hasher implements Serializable {
     }
 
     String date;
+
 }

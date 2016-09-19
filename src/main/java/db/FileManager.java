@@ -13,6 +13,13 @@ public class FileManager {
 
     public FileManager(String fileName) {
         this.fileName = fileName;
+        /*File newFile = new File(fileName);
+        try {
+            newFile.createNewFile();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+*/
     }
     public void saveName(String fileName) {
         this.fileName = fileName;
@@ -39,6 +46,7 @@ public class FileManager {
             loadStream.close();
         } catch (IOException ex) {
             System.out.println(ex.toString());
+            System.out.println("File Empty");
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.toString());
         }

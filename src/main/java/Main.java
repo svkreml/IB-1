@@ -37,10 +37,10 @@ public class Main {
                         System.exit(-1);
                         break;
                 }
-            }            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("Exception = " + e);
             }
-        } else{
+        } else {
             System.out.println("Нужны параметры:\n1)1 или 2 авторизация или регистация\n2)login, password, password2(если регистрация)");
             System.exit(-1);
         }

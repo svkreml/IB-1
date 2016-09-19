@@ -7,10 +7,13 @@ import db.FileManager;
 public class Test {
     public static void main(String[] args) {
         String filename = "db.db";
-                FileManager filemanager = new FileManager(filename);
-                Auth auth = new Auth(filemanager);
+        FileManager filemanager = new FileManager(filename);
+        Auth auth = new Auth(filemanager);
 
-        System.out.println(auth.registarion("login54", "password"));
-        System.out.println(auth.autorisation("login54", "password"));
+        System.out.println(auth.registarion("login", "password"));
+        System.out.println(auth.findLogin("login"));
+        System.out.println(auth.deleteLogin("login54"));
+        System.out.println(auth.autorisation("login", "password"));
+        System.out.println(auth.listHashes());
     }
 }

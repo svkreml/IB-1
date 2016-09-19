@@ -3,25 +3,54 @@ package db;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static db.Hasher.toSHA1;
 
 /**
  * Created by svkreml on 19.09.2016.
  */
-public class Auth{
-    Map<String, Hasher> db = new HashMap();
+public class Auth {
+    Map<String, Hasher> db;
     FileManager filemanager = null;
+
     public Auth(FileManager filemanager) {
-        this.filemanager=filemanager;
-        db = (Map<String, Hasher>)filemanager.load();
+        this.filemanager = filemanager;
+        db = (Map<String, Hasher>) filemanager.load();
     }
 
-    public boolean lookLogin(String login) {
+    public boolean findLogin(String login) {
         return db.containsKey(login);
     }
 
+    public Set<String> listLogin() {
+        return db.keySet();
+    }
+
+    public String listHashes() {
+        StringBuilder buff = new StringBuilder();
+        buff.append("login               date            hash\n");
+        for (String key : db.keySet()) {
+            char[] spaces = new char[(20 - key.length())];
+            for (int i = 0;i<(20 - key.length()); i++) {
+                spaces[i] = ' ';
+            }
+            buff.append(key + String.valueOf(spaces) + db.get(key).getDate() + "   " + db.get(key).getHash() + '\n');
+        }
+        return buff.toString();
+    }
+
+    public boolean deleteLogin(String login) {
+        if (db.containsKey(login)) {
+            db.remove(login);
+            filemanager.save(db);
+            return true;
+        }
+        return false;
+    }
+
     public String registarion(String login, String password) {
+        if(db==null) db = new HashMap();
         if (db.containsKey(login)) return "Already exist";
         Date date = new Date();
 
@@ -38,7 +67,6 @@ public class Auth{
             return "access";
         else return "wrong password";
     }
-
 
 
 }
