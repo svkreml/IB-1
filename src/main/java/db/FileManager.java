@@ -1,7 +1,6 @@
 package db;
 
 import java.io.*;
-import java.util.Map;
 
 /**
  * Created by svkreml on 19.09.2016.
@@ -15,8 +14,10 @@ public class FileManager {
     public FileManager(String fileName) {
         this.fileName = fileName;
     }
-
-    public void save(Map<String, Hasher> db) {
+    public void saveName(String fileName) {
+        this.fileName = fileName;
+    }
+    public void save(Object db) {
         try {
             saveStream = new ObjectOutputStream(
                     new FileOutputStream(fileName));
@@ -28,20 +29,20 @@ public class FileManager {
         }
     }
 
-    public Map<String, Hasher> load() {
-        Map<String, Hasher> db = null;
+    public Object load() {
+        Object object = null;
         try {
             loadStream = new ObjectInputStream(
                     new FileInputStream(fileName));
 
-            db = (Map<String, Hasher>) loadStream.readObject();
+            object =  loadStream.readObject();
             loadStream.close();
         } catch (IOException ex) {
             System.out.println(ex.toString());
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.toString());
         }
-        return db;
+        return object;
     }
 
     ;

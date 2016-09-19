@@ -14,7 +14,7 @@ public class Auth{
     FileManager filemanager = null;
     public Auth(FileManager filemanager) {
         this.filemanager=filemanager;
-        db = filemanager.load();
+        db = (Map<String, Hasher>)filemanager.load();
     }
 
     public boolean lookLogin(String login) {
